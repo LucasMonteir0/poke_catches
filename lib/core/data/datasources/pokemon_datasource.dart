@@ -1,5 +1,9 @@
-import '../models/pokemon_model.dart';
+import 'package:poke_caches/core/domain/entities/pokemon_urls_entity.dart';
+
+import '../../domain/entities/pokemon_entity.dart';
 
 abstract class PokemonDatasource{
-  Future<List<PokemonModel>> getAllPokemons();
+  Future<PokemonUrlsEntity> getPokeUrl();
+
+  Future<PokemonEntity> getPokemon(String url);
 }

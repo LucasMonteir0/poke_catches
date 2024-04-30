@@ -9,12 +9,12 @@ import 'get_all_pokemons_use_case.dart';
 
 class GetAllPokemonsUseCaseImpl implements GetAllPokemonsUseCase {
 
-  final PokemonRepository repository;
+  final PokemonRepository _repository;
 
-  GetAllPokemonsUseCaseImpl( this.repository);
+  GetAllPokemonsUseCaseImpl( this._repository);
 
   @override
   Future<Either<PokemonException, List<PokemonEntity>>> call() {
-    return repository.getAll();
+    return _repository.getAll();
   }
 }
