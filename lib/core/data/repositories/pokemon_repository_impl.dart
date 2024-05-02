@@ -10,10 +10,10 @@ class PokemonRepositoryImpl implements PokemonRepository{
   PokemonRepositoryImpl(this._datasource);
 
   @override
-  Future<Either<PokemonException, List<PokemonEntity>>> getAll() async {
+  Future<Either<PokemonException, List<PokemonEntity>>> getAll({int page = 0, int limit = 20, size = 20}) async {
     try {
       final List<PokemonEntity> pokemons = [];
-      final urls = await _datasource.getPokeUrl();
+      final urls = await _datasource.getPokeUrl(page: page, limit: limit);
       for (String url in urls.urls) {
         final pokemon = await _datasource.getPokemon(url);
         pokemons.add(pokemon);

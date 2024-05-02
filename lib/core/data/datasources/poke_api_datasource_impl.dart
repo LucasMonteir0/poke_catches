@@ -11,9 +11,9 @@ class PokeApiDatasourceImpl implements PokemonDatasource {
 
   PokeApiDatasourceImpl(this._client);
   @override
-  Future<PokemonUrlsEntity> getPokeUrl() async {
+  Future<PokemonUrlsEntity> getPokeUrl({int page = 0, int limit = 20, int size = 20}) async {
     final response = await _client.get('${Urls.pokeApiRoot}/pokemon',
-        queryParameters: {"limit": "20", "offset": "20"});
+        queryParameters: {"limit": "$limit", "offset": "${page * size}"});
     final Map<String, dynamic> data = (response.data as Map<String, dynamic>);
     return PokemonUrlsModel.fromJson(data);
   }

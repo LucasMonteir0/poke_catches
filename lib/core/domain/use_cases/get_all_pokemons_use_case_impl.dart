@@ -14,7 +14,7 @@ class GetAllPokemonsUseCaseImpl implements GetAllPokemonsUseCase {
   GetAllPokemonsUseCaseImpl( this._repository);
 
   @override
-  Future<Either<PokemonException, List<PokemonEntity>>> call() {
-    return _repository.getAll();
+  Future<Either<PokemonException, List<PokemonEntity>>> call({int page = 0, int limit = 20, size = 20}) {
+    return _repository.getAll(page: page, limit: limit);
   }
 }
