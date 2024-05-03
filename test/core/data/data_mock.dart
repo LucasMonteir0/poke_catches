@@ -1,4 +1,4 @@
-final pokeDataMock = {
+final Map<String, dynamic> pokeDataMock = {
   "id": 1,
   "name": "pikachu",
   "types": [

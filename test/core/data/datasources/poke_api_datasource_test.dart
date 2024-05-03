@@ -15,12 +15,18 @@ class ClientMock extends Mock implements PokeHttpClient {}
 main() {
   late PokeHttpClient client;
   late PokemonDatasource datasource;
-  const Map<String, dynamic> queryParams = {"limit": "20", "offset": "20"};
+  late final int page, limit, size;
+  late final Map<String, dynamic> queryParams;
   const String urlMock = 'https://wwww.url-mock.com';
 
   setUpAll(() {
     client = ClientMock();
     datasource = PokeApiDatasourceImpl(client);
+
+    page = 0;
+    limit = 1;
+    size = 1;
+    queryParams = {"limit": "$limit", "offset": "${page * size}"};
   });
 
   group('[DATA] - POKE API DATASOURCE', () {
@@ -36,7 +42,7 @@ main() {
         ),
       );
 
-      final result = await datasource.getPokeUrl();
+      final result = await datasource.getPokeUrl(page: page, limit: limit, size: size);
 
       expect(result, isA<PokemonUrlsEntity>());
     });
@@ -46,7 +52,7 @@ main() {
           .thenThrow(Exception());
 
       try {
-        await datasource.getPokeUrl();
+        await datasource.getPokeUrl(page: page, limit: limit, size: size);
       } catch (e) {
         expect(e, isA<Exception>());
       }

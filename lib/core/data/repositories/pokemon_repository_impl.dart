@@ -22,6 +22,7 @@ class PokemonRepositoryImpl implements PokemonRepository{
     } on GetAllPokemonsException catch (e) {
       return Left(e);
     } catch (e) {
+      print(e.toString());
       return Left(GetAllPokemonsException());
     }
   }

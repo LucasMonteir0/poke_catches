@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:poke_caches/commons/cache_manager/cache_manager_impl.dart';
 import 'package:poke_caches/core/domain/entities/pokemon_entity.dart';
 import 'package:poke_caches/core/domain/use_cases/get_all_pokemons_use_case.dart';
 
@@ -55,21 +57,43 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Material(
-      child: SizedBox(
-        height: size.height,
-        width: size.width,
-        child: ListView.builder(
-            controller: _scrollController,
-            itemCount: _pokemons.length,
-            itemBuilder: (context, index) {
-              final pokemon = _pokemons[index];
-              return ListTile(
-                title: Text(
-                  "${pokemon.id.toString().padLeft(3, '0')} ${pokemon.name}",
-                  style: TextStyle(color: Colors.black),
-                ),
-              );
-            }),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => CacheManagerImpl.instance.clear(),
+          ),
+        ),
+        body: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: GridView.builder(
+              controller: _scrollController,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: _pokemons.length,
+              itemBuilder: (context, index) {
+                final pokemon = _pokemons[index];
+                return Card(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: CachedNetworkImage(
+                          imageUrl: pokemon.pictureUrl,
+                          placeholder: (context, url) => SizedBox.square( dimension: 20, child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          "${pokemon.id.toString().padLeft(3, '0')} ${pokemon.name}",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }, ),
+        ),
       ),
     );
   }
